@@ -33,11 +33,12 @@ def main(file):
             summary_align = AlignInfo.SummaryInfo(alignment)
             summary_align.dumb_consensus(float(sys.argv[2]))
             
-            if align better
-                save to best alignment
+            if 'align better':
+                pass
+                # save to best alignment
             else next fasta
 
-        save best match to new struct
+        # save best match to new struct
 
 if __name__ == "__main__":
     input_fasta = sys.argv[1]
