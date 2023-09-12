@@ -38,25 +38,25 @@ def main(file):
     # Initial alignment for tree building and grouping of sequences
     utils.init_align(file)
 
-    for sequence in records:
-        reference_list = records.remove(sequence)
-        for ref_sequence in reference_list:
-            alignment = AlignIO.align()
-            summary_align = AlignInfo.SummaryInfo(alignment)
-            summary_align.dumb_consensus(float(sys.argv[2]))
+    # for sequence in records:
+    #     reference_list = records.remove(sequence)
+    #     for ref_sequence in reference_list:
+    #         alignment = AlignIO.align()
+    #         summary_align = AlignInfo.SummaryInfo(alignment)
+    #         summary_align.dumb_consensus(float(sys.argv[2]))
 
-            # if 'align better':
-            #     pass
-            #     # save to best alignment
-            # else next fasta
+    # if 'align better':
+    #     pass
+    #     # save to best alignment
+    # else next fasta
 
-        # save best match to new struct
+    # save best match to new struct
 
 
 if __name__ == "__main__":
     debug = True
     # Initialize logging
-    utils.logging(debug)
+    utils.setup_logging(debug)
 
     # TODO should set up argparse for finer control over input and parameters
     input_fasta = sys.argv[1]
