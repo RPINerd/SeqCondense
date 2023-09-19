@@ -13,6 +13,8 @@
 import os
 import sys
 
+import aln_tools
+import config
 import utils
 
 
@@ -24,7 +26,7 @@ def main(file):
     """
 
     # Initial alignment for tree building and grouping of sequences
-    fam_groups = utils.init_align(file)
+    fam_groups = aln_tools.init_align(file)
 
     # Associate each child in the families with their respective sequence
     family_dict = utils.associate_seqs(fam_groups, file)
@@ -39,10 +41,10 @@ if __name__ == "__main__":
     input_fasta = sys.argv[1]
 
     # Set up folder for temporary alignment/tree files
-    os.makedirs(utils.TMP_DIR, exist_ok=True)
+    os.makedirs(config.TMP_DIR, exist_ok=True)
 
     main(input_fasta)
 
     # Clean up temporary folder, unless specified not to via debug
     if not debug:
-        os.remove(utils.TMP_DIR)
+        os.remove(config.TMP_DIR)
