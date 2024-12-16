@@ -13,8 +13,9 @@
 import os
 import sys
 
-import aln_tools
-import config
+from Bio import AlignIO, SeqIO
+from Bio.Align import AlignInfo
+
 import utils
 
 
@@ -25,26 +26,46 @@ def main(file):
     all the sub functions to create said set of minimal consensus seqs
     """
 
-    # Initial alignment for tree building and grouping of sequences
-    fam_groups = aln_tools.init_align(file)
+    # Parse the provided file for sequences and store in list
+    records = []
+    try:
+        for record in SeqIO.parse(file, "fasta"):
+            records.append(record)
+    except Exception as e:
+        print(f"Error on record parsing: {e}")
+        exit
 
-    # Associate each child in the families with their respective sequence
-    family_dict = utils.associate_seqs(fam_groups, file)
+    # Initial alignment for tree building and grouping of sequences
+    utils.init_align(file)
+
+    for sequence in records:
+        reference_list = records.remove(sequence)
+        for ref_sequence in reference_list:
+            alignment = AlignIO.align()
+            summary_align = AlignInfo.SummaryInfo(alignment)
+            summary_align.dumb_consensus(float(sys.argv[2]))
+
+            # if 'align better':
+            #     pass
+            #     # save to best alignment
+            # else next fasta
+
+        # save best match to new struct
 
 
 if __name__ == "__main__":
     debug = True
     # Initialize logging
-    utils.setup_logging(debug)
+    utils.logging(debug)
 
     # TODO should set up argparse for finer control over input and parameters
     input_fasta = sys.argv[1]
 
     # Set up folder for temporary alignment/tree files
-    os.makedirs(config.TMP_DIR, exist_ok=True)
+    os.makedirs(utils.TMP_DIR, exist_ok=True)
 
     main(input_fasta)
 
     # Clean up temporary folder, unless specified not to via debug
     if not debug:
-        os.remove(config.TMP_DIR)
+        os.remove(utils.TMP_DIR)
